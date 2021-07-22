@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PokemonCardTraderBot.Common.Extensions;
+using PokemonCardTraderBot.Core.Managers;
 using PokemonCardTraderBot.Core.Services;
 
 namespace PokemonCardTraderBot.Core
@@ -22,6 +23,10 @@ namespace PokemonCardTraderBot.Core
         {
             services.AddDiscordClient(_configuration);
             services.AddHostedService<BotService>();
+            services.AddMemoryCache();
+
+            services.AddSingleton<SetsManager>();
+            services.AddSingleton<CardsManager>();
         }
         
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,0 +1,22 @@
+﻿# Card Rarities
+- Uncommon
+- Common
+- Rare Holo V
+- Rare Holo Lv.X
+- Rare Holo EX
+- Rare Holo
+- Rare
+- Rare Holo VMAX
+- Rare Rainbow
+- Promo
+- Rare Ultra
+- Rare Prime
+- Rare Secret
+- LEGEND
+- Rare ACE
+- Rare Shiny
+- Rare Holo GX
+- Rare BREAK
+- Amazing Rare
+- Rare Prism Star
+- Shining

@@ -24,7 +24,7 @@ namespace PokemonCardTraderBot.Core.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _commands.RegisterCommands<TestCommands>();
+            _commands.RegisterCommands<SearchCommands>();
             _client.Ready += ClientOnReady;
             await _client.ConnectAsync();
         }
