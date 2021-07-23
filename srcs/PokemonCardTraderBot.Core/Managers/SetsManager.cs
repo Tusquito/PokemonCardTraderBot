@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using PokemonTcgSdk;
@@ -25,9 +26,17 @@ namespace PokemonCardTraderBot.Core.Managers
                 return sets;
             }
             
-            sets = await Sets.AllAsync();
+            sets = (await Sets.AllAsync())
+                .Where(x => !x.Series.Contains("Other")
+                            && !x.Series.Contains("POP")
+                            && !x.Series.Contains("NP")
+                            && !x.Series.Contains("E-Card")
+                            && !x.Series.Contains("Neo")
+                            && !x.Series.Contains("Gym"))
+                .ToList();
+            
             _cache.Set(CacheKey, sets, new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
 
             return sets;
         }

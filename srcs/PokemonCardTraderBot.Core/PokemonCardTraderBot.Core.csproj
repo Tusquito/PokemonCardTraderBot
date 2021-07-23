@@ -6,13 +6,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DSharpPlus" Version="4.0.1" />
-      <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.1" />
+      <PackageReference Include="Disqord" Version="1.0.0-07232021-80" />
+      <PackageReference Include="Disqord.Bot" Version="1.0.0-07232021-80" />
+      <PackageReference Include="Disqord.Core" Version="1.0.0-07232021-80" />
       <PackageReference Include="PokemonTcgSdk" Version="1.1.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PokemonCardTraderBot.Common\PokemonCardTraderBot.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
+using Disqord;
+using Disqord.Bot;
+using Disqord.Rest;
 using Microsoft.Extensions.Logging;
 using PokemonCardTraderBot.Core.Managers;
 using PokemonTcgSdk.Models;
+using Qmmands;
 
 namespace PokemonCardTraderBot.Core.Commands
 {
-    public class SearchCommands : BaseCommandModule
+    public class SearchCommands : DiscordGuildModuleBase
     {
         private readonly ILogger<SearchCommands> _logger;
         private readonly SetsManager _setsManager;
@@ -23,37 +24,68 @@ namespace PokemonCardTraderBot.Core.Commands
             _setsManager = setsManager;
             _cardsManager = cardsManager;
         }
+        
+        
+       [Command("search-sets"), Description("Search sets command")]
+        public async Task OnSearchSetsCommand()
+        {
+            List<SetData> result = await _setsManager.GetOrAddAllAsync();
+
+            if (result == null || !result.Any())
+            {
+                await Context.Channel.SendMessageAsync(new LocalMessage {Content = "No result found"});
+                return;
+            }
+
+            var desc = result.GroupBy(x => x.Series)
+                .Select(group =>
+                    new
+                    {
+                        Series = group.Key,
+                        Names = group.Select(x => $"**[{x.Code}]** {x.Name}").Aggregate((x, y) => $"{x}\n{y}")
+                    })
+                .OrderBy(x => x.Series)
+                .Select(x => $"__{x.Series}__: \n{x.Names}")
+                .Aggregate((x, y) => $"{x}\n{y}");
+        }
 
         [Command("search-set"), Description("Search set command")]
-        public async Task OnSearchSetCommand(CommandContext ctx, [RemainingText]string name)
+        public async Task OnSearchSetCommand([Remainder]string name)
         {
             SetData result = await _setsManager.GetByNameAsync(name);
 
             if (result == null)
             {
-                await ctx.RespondAsync("No result found");
+                await Context.Channel.SendMessageAsync(new LocalMessage {Content = "No result found"});
                 return;
             }
 
-            await ctx.RespondAsync(new DiscordEmbedBuilder()
-                .WithColor(DiscordColor.Aquamarine)
-                .WithThumbnail(result.LogoUrl)
-                .WithTitle(result.Name)
-                .WithDescription(result
-                    .GetType()
-                    .GetProperties()
-                    .Aggregate("", (current, prop) => current + $"**{prop.Name}:** {prop.GetValue(result)}\n"))
-                .WithTimestamp(DateTime.UtcNow)
-            );
+            await Context.Channel.SendMessageAsync(new LocalMessage
+            {
+                Embeds = new List<LocalEmbed>
+                {
+                    new()
+                    {
+                        Color = Color.Aquamarine,
+                        ThumbnailUrl = result.LogoUrl,
+                        Title = result.Name,
+                        Description = result
+                            .GetType()
+                            .GetProperties()
+                            .Aggregate("", (current, prop) => current + $"**{prop.Name}:** {prop.GetValue(result)}\n"),
+                        Timestamp = DateTimeOffset.UtcNow
+                    }
+                }
+            });
         }
         
         [Command("search-set-cards"), Description("Search set cards command")]
-        public async Task OnSearchSetCardsCommand(CommandContext ctx, [RemainingText]string setCode)
+        public async Task OnSearchSetCardsCommand([Remainder]string setCode)
         {
             SetData setData = await _setsManager.GetBySetCodeAsync(setCode);
             if (setData == null)
             {
-                await ctx.RespondAsync("Invalid set code");
+                await Context.Channel.SendMessageAsync(new LocalMessage {Content = "Invalid set code"});
                 return;
             }
             
@@ -61,7 +93,7 @@ namespace PokemonCardTraderBot.Core.Commands
 
             if (result == null || !result.Any())
             {
-                await ctx.RespondAsync("No result found");
+                await Context.Channel.SendMessageAsync(new LocalMessage {Content = "No result found"});
                 return;
             }
 
@@ -71,15 +103,20 @@ namespace PokemonCardTraderBot.Core.Commands
                 .Select(x => $"{x.Rarity} ({x.Count})")
                 .Aggregate((x, y) => $"{x}, {y}");
 
-            await ctx.RespondAsync(new DiscordEmbedBuilder()
-                .WithColor(DiscordColor.Aquamarine)
-                .WithThumbnail(setData.LogoUrl)
-                .WithTitle($"{setData.Name} cards")
-                .WithDescription($"**Rarities:** {rarities}\n" +
-                                 $"**Amount:** {result.Count}")
-                .WithTimestamp(DateTime.UtcNow)
-            );
+            await Context.Channel.SendMessageAsync(new LocalMessage
+            {
+                Embeds = new List<LocalEmbed>
+                {
+                    new()
+                    {
+                        Color = Color.Aquamarine,
+                        ThumbnailUrl = setData.LogoUrl,
+                        Title = $"{setData.Name} cards",
+                        Description = $"**Rarities:** {rarities}\n**Amount:** {result.Count}",
+                        Timestamp = DateTimeOffset.UtcNow
+                    }
+                }
+            });
         }
-        
     }
 }

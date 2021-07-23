@@ -5,13 +5,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DSharpPlus" Version="4.0.1" />
-      <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.1" />
+      <PackageReference Include="Disqord" Version="1.0.0-07232021-80" />
+      <PackageReference Include="Disqord.Bot" Version="1.0.0-07232021-80" />
+      <PackageReference Include="Disqord.Core" Version="1.0.0-07232021-80" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="PokemonTcgSdk" Version="1.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Extensions" />
+      <Folder Include="Models" />
+      <Folder Include="Options" />
     </ItemGroup>
 
 </Project>

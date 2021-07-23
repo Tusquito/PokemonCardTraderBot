@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Disqord.Bot.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -29,8 +30,13 @@ namespace PokemonCardTraderBot.Core
                         s.ListenAnyIP(37777);
                     });
                     webBuilder.UseStartup<Startup>();
-                });
-            host.UseConsoleLifetime();
+                })
+                .ConfigureDiscordBot((context, bot) =>
+                {
+                    bot.Token = context.Configuration["TOKEN"];
+                    bot.Prefixes = new[] { context.Configuration["PREFIX"] };
+                })
+                .UseConsoleLifetime();
             return host;
         }
     }
