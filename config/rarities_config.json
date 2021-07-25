@@ -1,0 +1,18 @@
+﻿{
+  "Rare": {
+    "Rarities": ["Rare", "Rare Holo"],
+    "DropChance": 0.852
+  },
+  "UltraRare": {
+    "Rarities": ["Rare Holo EX", "Rare Prism Star", "Rare Holo Lv.X", "LEGEND", "Rare Prime", "Rare Holo GX", "Rare Holo V", "Rare Holo VMAX", "Rare Ultra", "Rare BREAK"],
+    "DropChance": 0.125
+  },
+  "SecretRare": {
+    "Rarities": ["Rare Shiny", "Rare Rainbow", "Rare Secret"],
+    "DropChance": 0.023
+  },
+  "Special": {
+    "Rarities": ["Promo", "Rare ACE", "Amazing Rare"],
+    "DropChance": 1
+  }
+}

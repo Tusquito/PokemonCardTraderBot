@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using PokemonCardTraderBot.Common.Services;
 using PokemonTcgSdk.Models;
 
@@ -40,6 +39,8 @@ namespace PokemonCardTraderBot.Common.Extensions
                                   && !x.Rarity.Contains("VMAX"));
         
         public static List<PokemonCard> SelectRareCards(this List<PokemonCard> cards)
-            => cards.FindAll(x => x.Rarity.Contains("Rare") || x.Rarity.Contains("LEGEND"));
+            => cards.FindAll(x => x.Rarity.Contains("Rare") 
+                                  || x.Rarity.Contains("LEGEND")
+                                  || x.Rarity.Contains("Promo"));
     }
 }

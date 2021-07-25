@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Disqord;
 using Disqord.Bot;
 using Disqord.Extensions.Interactivity.Menus;
 using Disqord.Extensions.Interactivity.Menus.Paged;
+using PokemonCardTraderBot.Common.Configurations;
+using PokemonCardTraderBot.Common.Enums;
 using PokemonCardTraderBot.Common.Extensions;
 using PokemonCardTraderBot.Common.Services;
 using PokemonCardTraderBot.Common.Views;
@@ -18,12 +20,14 @@ namespace PokemonCardTraderBot.Core.Commands
         private readonly SetManager _setManager;
         private readonly CardManager _cardManager;
         private readonly IRandomService _randomService;
+        private readonly RaritiesConfiguration _configuration;
 
-        public TestCommands(SetManager setManager, CardManager cardManager, IRandomService randomService)
+        public TestCommands(SetManager setManager, CardManager cardManager, IRandomService randomService, RaritiesConfiguration configuration)
         {
             _setManager = setManager;
             _cardManager = cardManager;
             _randomService = randomService;
+            _configuration = configuration;
         }
 
         [Command("test-butttons"), Description("Test buttons command")]
@@ -45,6 +49,11 @@ namespace PokemonCardTraderBot.Core.Commands
             CustomPagedView view = new CustomPagedView(new ListPageProvider(setCards.ToBooster(_randomService).ToPages(setData)));
             return Menu(new InteractiveMenu(Context.Author.Id, view));
         }
-            
+        
+        [Command("test"), Description("Test rarities command")]
+        public async Task<DiscordCommandResult> OnCardRaritiesCommand()
+        {
+            return Reply(_configuration[RarityType.Rare].Rarities.Aggregate((x,y) => $"{x}, {y}"));
+        }
     }
 }

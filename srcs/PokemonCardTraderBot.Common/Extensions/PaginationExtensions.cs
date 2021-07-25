@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Disqord;
 using Disqord.Extensions.Interactivity.Menus.Paged;
-using PokemonTcgSdk;
 using PokemonTcgSdk.Models;
 
 namespace PokemonCardTraderBot.Common.Extensions
