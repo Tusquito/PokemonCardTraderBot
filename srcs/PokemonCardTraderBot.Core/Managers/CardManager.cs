@@ -7,13 +7,13 @@ using PokemonTcgSdk.Models;
 
 namespace PokemonCardTraderBot.Core.Managers
 {
-    public class CardsManager
+    public class CardManager
     {
         private const string CacheKey = "{0}-set-cards-cache-key";
         
         private readonly IMemoryCache _cache;
 
-        public CardsManager(IMemoryCache cache)
+        public CardManager(IMemoryCache cache)
         {
             _cache = cache;
         }

@@ -8,13 +8,13 @@ using PokemonTcgSdk.Models;
 
 namespace PokemonCardTraderBot.Core.Managers
 {
-    public class SetsManager
+    public class SetManager
     {
         private const string CacheKey = "sets-cache-key";
 
         private readonly IMemoryCache _cache;
 
-        public SetsManager(IMemoryCache cache)
+        public SetManager(IMemoryCache cache)
         {
             _cache = cache;
         }
@@ -46,9 +46,10 @@ namespace PokemonCardTraderBot.Core.Managers
             return (await GetOrAddAllAsync()).Find(x => x.Code == setCode);
         }
         
-        public async Task<SetData> GetByNameAsync(string name)
+        public async Task<SetData> SearchAsync(string search)
         {
-            return (await GetOrAddAllAsync()).Find(x => x.Name.ToLower().Contains(name.ToLower()));
+            return (await GetOrAddAllAsync()).Find(x => x.Name.ToLower().Contains(search.ToLower()))
+                ?? (await GetOrAddAllAsync()).Find(x => x.Code.ToLower().Contains(search.ToLower()));
         }
     }
 }

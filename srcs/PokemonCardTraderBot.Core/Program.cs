@@ -35,6 +35,7 @@ namespace PokemonCardTraderBot.Core
                 {
                     bot.Token = context.Configuration["TOKEN"];
                     bot.Prefixes = new[] { context.Configuration["PREFIX"] };
+                    bot.UseMentionPrefix = true;
                 })
                 .UseConsoleLifetime();
             return host;
