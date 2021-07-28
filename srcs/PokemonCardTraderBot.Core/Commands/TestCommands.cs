@@ -10,6 +10,7 @@ using PokemonCardTraderBot.Common.Extensions;
 using PokemonCardTraderBot.Common.Services;
 using PokemonCardTraderBot.Common.Views;
 using PokemonCardTraderBot.Core.Managers;
+using PokemonTcgSdk;
 using PokemonTcgSdk.Models;
 using Qmmands;
 
@@ -31,7 +32,7 @@ namespace PokemonCardTraderBot.Core.Commands
         }
 
         [Command("test-butttons"), Description("Test buttons command")]
-        public async Task<DiscordCommandResult> OnClickerTestCommand()
+        public DiscordCommandResult OnClickerTestCommand()
             => View(new ClickerView());
 
         [Command("test-booster"), Description("Test booster command")]
@@ -46,14 +47,16 @@ namespace PokemonCardTraderBot.Core.Commands
 
             List<PokemonCard> setCards = await _cardManager.GetOrAddBySetCode(setData.Code);
             
-            CustomPagedView view = new CustomPagedView(new ListPageProvider(setCards.ToBooster(_randomService).ToPages(setData)));
+            CustomPagedView view = new CustomPagedView(new ListPageProvider(setCards.ToBooster(_randomService, _configuration)
+                .ToPages(setData)));
             return Menu(new InteractiveMenu(Context.Author.Id, view));
         }
         
         [Command("test"), Description("Test rarities command")]
         public async Task<DiscordCommandResult> OnCardRaritiesCommand()
         {
-            return Reply(_configuration[RarityType.Rare].Rarities.Aggregate((x,y) => $"{x}, {y}"));
+            
+            return Reply((await Card.AllAsync()).Select(x => x.SubType).ToHashSet().Aggregate((x,y) => $"{x}, {y}"));
         }
     }
 }

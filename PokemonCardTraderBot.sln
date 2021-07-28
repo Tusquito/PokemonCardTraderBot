@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonCardTraderBot.Core",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonCardTraderBot.Common", "srcs\PokemonCardTraderBot.Common\PokemonCardTraderBot.Common.csproj", "{7CA40F32-4795-4A1F-A8A8-ACA928781F9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonCardTraderBot.Database", "srcs\PokemonCardTraderBot.Database\PokemonCardTraderBot.Database.csproj", "{99377A15-A705-4FF3-800C-09BEAD2661FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7CA40F32-4795-4A1F-A8A8-ACA928781F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CA40F32-4795-4A1F-A8A8-ACA928781F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CA40F32-4795-4A1F-A8A8-ACA928781F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99377A15-A705-4FF3-800C-09BEAD2661FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99377A15-A705-4FF3-800C-09BEAD2661FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99377A15-A705-4FF3-800C-09BEAD2661FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99377A15-A705-4FF3-800C-09BEAD2661FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

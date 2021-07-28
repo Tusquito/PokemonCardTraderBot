@@ -5,14 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Disqord" Version="1.0.0-07232021-80" />
-      <PackageReference Include="Disqord.Bot" Version="1.0.0-07232021-80" />
-      <PackageReference Include="Disqord.Core" Version="1.0.0-07232021-80" />
+      <PackageReference Include="Mapster" Version="7.2.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-preview.6.21352.12" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0-preview.6.21352.12" />
-      <PackageReference Include="PokemonTcgSdk" Version="1.1.1" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PokemonCardTraderBot.Common\PokemonCardTraderBot.Common.csproj" />
     </ItemGroup>
 
 </Project>

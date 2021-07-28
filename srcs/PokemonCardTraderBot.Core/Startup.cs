@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using PokemonCardTraderBot.Common.Configurations;
 using PokemonCardTraderBot.Common.Extensions;
 using PokemonCardTraderBot.Common.Services;
 using PokemonCardTraderBot.Core.Managers;
