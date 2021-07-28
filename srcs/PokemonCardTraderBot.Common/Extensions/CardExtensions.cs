@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using PokemonCardTraderBot.Common.Configurations;
+using PokemonCardTraderBot.Common.Enums;
 using PokemonCardTraderBot.Common.Services;
 using PokemonTcgSdk.Models;
 
@@ -6,13 +9,14 @@ namespace PokemonCardTraderBot.Common.Extensions
 {
     public static class CardExtensions
     {
-        public static List<PokemonCard> ToBooster(this List<PokemonCard> allCards, IRandomService randomService)
+        public static List<PokemonCard> ToBooster(this List<PokemonCard> allCards, IRandomService randomService,
+            RaritiesConfiguration configuration)
         {
             List<PokemonCard> boosterCards = new();
             boosterCards.AddRange(allCards.SelectCommonCards().PickRandomCards(randomService, 5));
             boosterCards.AddRange(allCards.SelectUncommonCards().PickRandomCards(randomService, 3));
-            boosterCards.AddRange(allCards.SelectHoloCards().PickRandomCards(randomService, 1));
-            boosterCards.AddRange(allCards.SelectRareCards().PickRandomCards(randomService, 1));
+            boosterCards.AddRange(allCards.SelectHoloCards(configuration).PickRandomCards(randomService, 1));
+            boosterCards.AddRange(allCards.SelectRarePlusCards(randomService, configuration).PickRandomCards(randomService, 1));
             return boosterCards;
         }
 
@@ -32,15 +36,28 @@ namespace PokemonCardTraderBot.Common.Extensions
         public static List<PokemonCard> SelectUncommonCards(this List<PokemonCard> cards)
             => cards.FindAll(x => x.Rarity == "Uncommon");
         
-        public static List<PokemonCard> SelectHoloCards(this List<PokemonCard> cards)
+        public static List<PokemonCard> SelectHoloCards(this List<PokemonCard> cards, RaritiesConfiguration configuration)
             => cards.FindAll(x => (x.Rarity.Contains("Holo") || x.Rarity.Contains("Shining"))
-                                  && !x.Rarity.Contains("GX")
-                                  && !x.Rarity.Contains("EX")
-                                  && !x.Rarity.Contains("VMAX"));
+                                  && !configuration[RarityType.UltraRare].Rarities.Contains(x.Rarity)
+                                  && !configuration[RarityType.SecretRare].Rarities.Contains(x.Rarity));
         
-        public static List<PokemonCard> SelectRareCards(this List<PokemonCard> cards)
-            => cards.FindAll(x => x.Rarity.Contains("Rare") 
-                                  || x.Rarity.Contains("LEGEND")
-                                  || x.Rarity.Contains("Promo"));
+        public static List<PokemonCard> SelectRarePlusCards(this List<PokemonCard> cards, IRandomService randomService,
+            RaritiesConfiguration configuration)
+        {
+            int rdmNumber = randomService.NextInt(0, 1000);
+            Console.WriteLine(rdmNumber.ToString());
+
+            if (rdmNumber < configuration[RarityType.SecretRare].DropChance * 1000)
+            {
+                return cards.FindAll(x => configuration[RarityType.SecretRare].Rarities.Contains(x.Rarity));
+            }
+
+            if (rdmNumber < configuration[RarityType.UltraRare].DropChance * 1000)
+            {
+                return cards.FindAll(x => configuration[RarityType.UltraRare].Rarities.Contains(x.Rarity));
+            }
+
+            return cards.FindAll(x => configuration[RarityType.Rare].Rarities.Contains(x.Rarity));
+        }
     }
 }
