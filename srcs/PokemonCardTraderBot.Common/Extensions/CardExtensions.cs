@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PokemonCardTraderBot.Common.Configurations;
 using PokemonCardTraderBot.Common.Enums;
 using PokemonCardTraderBot.Common.Services;
@@ -22,6 +23,11 @@ namespace PokemonCardTraderBot.Common.Extensions
 
         public static List<PokemonCard> PickRandomCards(this List<PokemonCard> cards, IRandomService randomService, int amount)
         {
+            if (!cards.Any())
+            {
+                return null;
+            }
+            
             List<PokemonCard> pickedCards = new();
             for (int i = 0; i < amount; i++)
             {
@@ -35,11 +41,15 @@ namespace PokemonCardTraderBot.Common.Extensions
         
         public static List<PokemonCard> SelectUncommonCards(this List<PokemonCard> cards)
             => cards.FindAll(x => x.Rarity == "Uncommon");
-        
-        public static List<PokemonCard> SelectHoloCards(this List<PokemonCard> cards, RaritiesConfiguration configuration)
-            => cards.FindAll(x => (x.Rarity.Contains("Holo") || x.Rarity.Contains("Shining"))
-                                  && !configuration[RarityType.UltraRare].Rarities.Contains(x.Rarity)
-                                  && !configuration[RarityType.SecretRare].Rarities.Contains(x.Rarity));
+
+        public static List<PokemonCard> SelectHoloCards(this List<PokemonCard> cards,
+            RaritiesConfiguration configuration)
+        {
+            return cards.FindAll(x => (x.Rarity.Contains("Holo") || x.Rarity.Contains("Shining"))
+                                                                 && !configuration[RarityType.UltraRare].Rarities.Contains(x.Rarity)
+                                                                 && !configuration[RarityType.SecretRare].Rarities
+                                                                     .Contains(x.Rarity));
+        }
         
         public static List<PokemonCard> SelectRarePlusCards(this List<PokemonCard> cards, IRandomService randomService,
             RaritiesConfiguration configuration)

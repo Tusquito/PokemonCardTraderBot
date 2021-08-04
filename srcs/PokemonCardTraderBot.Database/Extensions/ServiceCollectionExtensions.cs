@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using PokemonCardTraderBot.Common.Generic;
 using PokemonCardTraderBot.Database.Context;
 using PokemonCardTraderBot.Database.Generic;
-using PokemonCardTraderBot.Database.Option;
+using PokemonCardTraderBot.Database.Options;
 using PokemonCardTraderBot.Database.Utils;
 
 namespace PokemonCardTraderBot.Database.Extensions

@@ -33,7 +33,7 @@ namespace PokemonCardTraderBot.Core.Commands
        [Command("list-sets"), Description("Search sets command")]
         public async Task<DiscordCommandResult> OnSearchSetsCommand()
         {
-            List<SetData> result = await _setManager.GetOrAddAllAsync();
+            List<SetData> result = await _setManager.GetAllAsync();
             
             if (result == null || !result.Any())
             {

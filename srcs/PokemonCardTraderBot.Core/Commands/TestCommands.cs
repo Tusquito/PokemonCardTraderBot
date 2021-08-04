@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Disqord.Bot;
 using Disqord.Extensions.Interactivity.Menus;
 using Disqord.Extensions.Interactivity.Menus.Paged;
+using Disqord.Rest;
 using PokemonCardTraderBot.Common.Configurations;
-using PokemonCardTraderBot.Common.Enums;
 using PokemonCardTraderBot.Common.Extensions;
 using PokemonCardTraderBot.Common.Services;
 using PokemonCardTraderBot.Common.Views;
@@ -35,6 +35,16 @@ namespace PokemonCardTraderBot.Core.Commands
         public DiscordCommandResult OnClickerTestCommand()
             => View(new ClickerView());
 
+        [Command("purge-emotes"), Description("Purge emotes")]
+        public async Task<DiscordCommandResult> OnPurgeEmotesCommand()
+        {
+            foreach (var emojiData in Context.Guild.Emojis)
+            {
+                await Context.Guild.DeleteEmojiAsync(emojiData.Key);
+            }
+            return Reply("Done");
+        }
+
         [Command("test-booster"), Description("Test booster command")]
         public async Task<DiscordCommandResult> OnBoosterTestCommand([Remainder] string setCode)
         {
@@ -46,7 +56,7 @@ namespace PokemonCardTraderBot.Core.Commands
             }
 
             List<PokemonCard> setCards = await _cardManager.GetOrAddBySetCode(setData.Code);
-            
+            var message = Reply();
             CustomPagedView view = new CustomPagedView(new ListPageProvider(setCards.ToBooster(_randomService, _configuration)
                 .ToPages(setData)));
             return Menu(new InteractiveMenu(Context.Author.Id, view));

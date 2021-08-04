@@ -4,7 +4,7 @@ using PokemonCardTraderBot.Common.Enums;
 
 namespace PokemonCardTraderBot.Common.Configurations
 {
-    [ConfigurationName("rarities_config")]
+    [ConfigurationFileName("card_rarities_config")]
     public class RaritiesConfiguration : Dictionary<RarityType, RarityInfo>, IDefaultConfiguration
     {
     }

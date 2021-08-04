@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using Disqord.Bot.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PokemonCardTraderBot.Common.Options;
 
 namespace PokemonCardTraderBot.Core
 {
@@ -33,8 +35,9 @@ namespace PokemonCardTraderBot.Core
                 })
                 .ConfigureDiscordBot((context, bot) =>
                 {
-                    bot.Token = context.Configuration["TOKEN"];
-                    bot.Prefixes = new[] { context.Configuration["PREFIX"] };
+                    var botConfig = context.Configuration.GetSection(DiscordBotOptions.Name).Get<DiscordBotOptions>();
+                    bot.Token = botConfig.Token;
+                    bot.Prefixes = botConfig.Prefixes;
                     bot.UseMentionPrefix = true;
                 })
                 .UseConsoleLifetime();
